@@ -3,171 +3,159 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Arpan's Exam Hub</title>
+<title>My Exam Dashboard</title>
 <style>
-    /* --- Reset & Base --- */
-    * {margin:0;padding:0;box-sizing:border-box;font-family: 'Segoe UI', sans-serif;}
-    body {background-color: #0d0d0d;color:#fff;}
-    a {color:#1db954;text-decoration:none;}
-    a:hover {text-decoration:underline;}
-    .container {max-width:1200px;margin:auto;padding:20px;}
-    
-    /* --- Header --- */
-    header {display:flex;justify-content:space-between;align-items:center;margin-bottom:30px;}
-    .logo {font-size:2rem;font-weight:bold;color:#00bfff;}
-    nav select,input[type="text"],button {margin-left:10px;padding:8px 12px;border-radius:5px;border:none;}
-    nav select {background:#222;color:#fff;}
-    button {background:#1db954;color:#000;font-weight:bold;cursor:pointer;}
-    button:hover {background:#17a34a;}
-    
-    /* --- Sections --- */
-    section {margin-bottom:40px;}
-    h2 {margin-bottom:15px;color:#00bfff;border-bottom:1px solid #00bfff;padding-bottom:5px;}
-    
-    /* --- Exam Tracker --- */
-    .exam-tracker {display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:15px;}
-    .exam-card {background:#111;padding:15px;border-radius:10px;transition:0.3s;cursor:pointer;}
-    .exam-card.upcoming {border-left:5px solid #00bfff;}
-    .exam-card.past {border-left:5px solid #555;color:#777;}
-    .exam-card:hover {transform:scale(1.03);}
-    .exam-date {font-size:0.9rem;color:#aaa;}
-    
-    /* --- Links Section --- */
-    .links {display:flex;flex-wrap:wrap;gap:15px;}
-    .link-card {background:#111;padding:15px;border-radius:10px;width:200px;text-align:center;transition:0.3s;}
-    .link-card:hover {transform:scale(1.05);}
-    
-    /* --- Search --- */
-    .search-bar {display:flex;gap:10px;margin-bottom:20px;}
-    input[type="text"] {flex:1;}
-    
-    /* --- Footer --- */
-    footer {text-align:center;color:#555;margin-top:50px;font-size:0.9rem;}
+  /* Netflix-style blue UI */
+  body {
+    font-family: 'Arial', sans-serif;
+    background-color: #0d1117;
+    color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+  }
+  header {
+    background-color: #1e2a38;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  header img {
+    width: 50px;
+    height: 50px;
+  }
+  header h1 {
+    font-size: 1.8rem;
+    color: #58a6ff;
+    margin: 0;
+  }
+  .container {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
+  .section {
+    background-color: #161b22;
+    padding: 15px;
+    border-radius: 10px;
+  }
+  .section h2 {
+    color: #58a6ff;
+    margin-top: 0;
+  }
+  select, input[type="text"], button {
+    padding: 6px 10px;
+    border-radius: 5px;
+    border: none;
+    margin-right: 8px;
+  }
+  button {
+    background-color: #2380ff;
+    color: white;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #58a6ff;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  table, th, td {
+    border: 1px solid #58a6ff;
+  }
+  th, td {
+    padding: 8px;
+    text-align: center;
+  }
+  th {
+    background-color: #1e2a38;
+  }
+  td {
+    background-color: #161b22;
+  }
+  .link-btn {
+    color: #58a6ff;
+    cursor: pointer;
+    text-decoration: underline;
+  }
 </style>
 </head>
 <body>
+
+<header>
+  <img src="https://i.imgur.com/5b2cK0K.png" alt="Logo">
+  <h1>My Exam Dashboard</h1>
+</header>
+
 <div class="container">
-    <!-- Header -->
-    <header>
-        <div class="logo">🌀 Arpan's Exam Hub</div>
-        <nav>
-            <select id="sessionSelect">
-                <option value="m">Feb/Mar</option>
-                <option value="s">May/June</option>
-                <option value="w">Oct/Nov</option>
-            </select>
-            <select id="yearSelect"></select>
-            <select id="paperSelect"></select>
-            <button id="goLink">Go</button>
-            <input type="text" id="ytSearch" placeholder="9702/42/o/n/24">
-            <button id="ytGo">YT</button>
-        </nav>
-    </header>
-    
-    <!-- Exam Tracker -->
-    <section>
-        <h2>Exam Tracker</h2>
-        <div class="exam-tracker" id="examTracker">
-            <!-- Exam cards populated via JS -->
-        </div>
-    </section>
-    
-    <!-- QP & SF Links -->
-    <section>
-        <h2>Past Papers & Solutions</h2>
-        <div class="links" id="linksSection">
-            <!-- Links populated via JS -->
-        </div>
-    </section>
+
+  <!-- Session Selector & QP/SF search -->
+  <div class="section">
+    <h2>Past Papers & Solutions</h2>
+    <select id="sessionSelector">
+      <option value="m">Feb/Mar</option>
+      <option value="s">May/June</option>
+      <option value="w">Oct/Nov</option>
+    </select>
+    <select id="yearSelector">
+      <option value="2024">2024</option>
+      <option value="2023">2023</option>
+      <option value="2022">2022</option>
+      <option value="2021">2021</option>
+      <option value="2020">2020</option>
+    </select>
+    <input type="text" id="paperSearch" placeholder="Enter Paper Code e.g., 9702/42/o/n/24">
+    <button onclick="openPaper()">Open</button>
+  </div>
+
+  <!-- Exam Tracker -->
+  <div class="section">
+    <h2>My Exam Tracker</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Subject</th>
+          <th>Paper</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>27 April</td><td>English General Paper</td><td>P1</td></tr>
+        <tr><td>4 May</td><td>English General Paper</td><td>P2</td></tr>
+        <tr><td>6 May</td><td>Mechanics / Maths</td><td>P4</td></tr>
+        <tr><td>7 May</td><td>Chemistry</td><td>P4</td></tr>
+        <tr><td>11 May</td><td>Physics</td><td>P4</td></tr>
+        <tr><td>15 May</td><td>Maths</td><td>P3</td></tr>
+        <tr><td>18 May</td><td>Chemistry</td><td>P5</td></tr>
+        <tr><td>19 May</td><td>Computer Science</td><td>P3</td></tr>
+        <tr><td>20 May</td><td>Physics</td><td>P5</td></tr>
+        <tr><td>21 May</td><td>Computer Science</td><td>P4</td></tr>
+      </tbody>
+    </table>
+  </div>
+
 </div>
 
-<footer>Made with 💙 by Arpan Maharjan</footer>
-
 <script>
-    // --- Exam Dates ---
-    const exams = [
-        {date:'2026-04-27', subject:'EGP', paper:'P1'},
-        {date:'2026-05-04', subject:'EGP', paper:'P2'},
-        {date:'2026-05-06', subject:'Mechanics/Maths', paper:'P4'},
-        {date:'2026-05-07', subject:'Chemistry', paper:'P4'},
-        {date:'2026-05-11', subject:'Physics', paper:'P4'},
-        {date:'2026-05-15', subject:'Maths', paper:'P3'},
-        {date:'2026-05-18', subject:'Chemistry', paper:'P5'},
-        {date:'2026-05-19', subject:'Computer', paper:'P3'},
-        {date:'2026-05-20', subject:'Physics', paper:'P5'},
-        {date:'2026-05-21', subject:'Computer', paper:'P4'}
-    ];
+  function openPaper() {
+    const session = document.getElementById('sessionSelector').value;
+    const year = document.getElementById('yearSelector').value;
+    const paper = document.getElementById('paperSearch').value.trim();
 
-    function populateExams() {
-        const container = document.getElementById('examTracker');
-        const today = new Date();
-        exams.forEach(ex => {
-            const exDate = new Date(ex.date);
-            const card = document.createElement('div');
-            card.classList.add('exam-card');
-            card.classList.add(exDate >= today ? 'upcoming':'past');
-            card.innerHTML = `<strong>${ex.subject}</strong><br>${ex.paper}<div class="exam-date">${ex.date}</div>`;
-            container.appendChild(card);
-        });
+    if (!paper) {
+      alert("Please enter a paper code!");
+      return;
     }
 
-    // --- Years & Papers ---
-    const years = [2024,2023,2022,2021,2020,2019,2018]; // Add more if needed
-    const papers = ['P1','P2','P3','P4','P5'];
-
-    function populateDropdowns() {
-        const yearSel = document.getElementById('yearSelect');
-        years.forEach(y => {
-            const opt = document.createElement('option');
-            opt.value = y;
-            opt.textContent = y;
-            yearSel.appendChild(opt);
-        });
-        const paperSel = document.getElementById('paperSelect');
-        papers.forEach(p => {
-            const opt = document.createElement('option');
-            opt.value = p;
-            opt.textContent = p;
-            paperSel.appendChild(opt);
-        });
-    }
-
-    // --- Generate QP Links ---
-    function generateLinks() {
-        const linksContainer = document.getElementById('linksSection');
-        years.forEach(y=>{
-            ['m','s','w'].forEach(sess=>{
-                papers.forEach(p=>{
-                    const linkCard = document.createElement('div');
-                    linkCard.classList.add('link-card');
-                    linkCard.innerHTML = `<strong>${p} ${y} (${sess.toUpperCase()})</strong><br><a href="https://www.example.com/${y}/${sess}/${p}" target="_blank">QP</a> | <a href="https://www.example.com/${y}/${sess}/${p}/sf" target="_blank">SF</a>`;
-                    linksContainer.appendChild(linkCard);
-                });
-            });
-        });
-    }
-
-    // --- Button Actions ---
-    document.getElementById('goLink').addEventListener('click', ()=>{
-        const year = document.getElementById('yearSelect').value;
-        const sess = document.getElementById('sessionSelect').value;
-        const paper = document.getElementById('paperSelect').value;
-        const url = `https://www.example.com/${year}/${sess}/${paper}`;
-        window.open(url,'_blank');
-    });
-
-    document.getElementById('ytGo').addEventListener('click', ()=>{
-        const query = document.getElementById('ytSearch').value.trim();
-        if(query) {
-            const ytUrl = `https://www.youtube.com/results?search_query=${query}`;
-            window.open(ytUrl,'_blank');
-        }
-    });
-
-    // --- Initialize ---
-    populateExams();
-    populateDropdowns();
-    generateLinks();
+    // Construct the URL for past paper
+    // Example: https://www.cambridgeinternational.org/pastpapers/9702/42/m/24
+    const url = `https://www.cambridgeinternational.org/pastpapers/${paper.replace(/o\/n|f|s|w/gi, session)}`;
+    window.open(url, '_blank');
+  }
 </script>
+
 </body>
 </html>
