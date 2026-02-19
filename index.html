@@ -188,6 +188,18 @@ function searchYoutube(){
   const q=`${subj} ${comp} paper`;
   window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(q)}`,'_blank');
 }
+// YouTube search (updated format)
+function searchYoutube(){
+  const subj = document.getElementById('subjectCode').value;
+  const comp = document.getElementById('component').value;
+  const ses = document.getElementById('session').value.toLowerCase(); // m/s/w
+  const year = document.getElementById('year').value;
+  const sessionMap = {m:'m', s:'s', w:'o'}; // Map to short session codes (example: w->o for Oct/Nov)
+  
+  const sesCode = sessionMap[ses] || ses; 
+  const query = `${subj}/${comp}/${sesCode}/${year}`;
+  window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`, '_blank');
+}
 
 // Load history
 updateHistory();
@@ -215,3 +227,4 @@ toggle.onclick=function(){
 </script>
 </body>
 </html>
+
