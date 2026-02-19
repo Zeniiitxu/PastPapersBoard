@@ -3,128 +3,215 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cambridge AS/A2 Past Papers</title>
+<title>Past Papers & Exam Tracker</title>
+<link rel="icon" href="LOGO.png" type="image/png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        background: #f0f2f5;
-        margin: 0; padding: 0;
-    }
-    header {
-        background: #4A90E2;
-        color: white;
-        padding: 20px;
-        text-align: center;
-        font-size: 1.6em;
-        font-weight: bold;
-    }
-    main {
-        max-width: 700px;
-        margin: 30px auto;
-        background: white;
-        padding: 25px;
-        border-radius: 10px;
-        box-shadow: 0px 5px 15px rgba(0,0,0,0.1);
-    }
-    label {
-        display: block;
-        margin-top: 15px;
-        font-weight: bold;
-    }
-    select, input {
-        width: 100%;
-        padding: 8px;
-        margin-top: 5px;
-        border-radius: 5px;
-        border: 1px solid #ccc;
-        font-size: 1em;
-    }
-    button {
-        margin-top: 20px;
-        width: 48%;
-        padding: 12px;
-        font-size: 1em;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        color: white;
-    }
-    #openPaper { background: #28a745; }
-    #openYT { background: #FF0000; }
-    button:hover { opacity: 0.9; }
-    .buttons { display: flex; justify-content: space-between; }
+/* Basic Reset */
+* {margin:0; padding:0; box-sizing:border-box;}
+body {font-family: 'Segoe UI', sans-serif; background-color:#f0f4f8; color:#fff; min-height:100vh; padding:20px;}
+
+/* Netflix-like container */
+.container {max-width:1400px; margin:auto; display:flex; flex-direction:column; gap:40px;}
+
+/* Header */
+.header {display:flex; justify-content:space-between; align-items:center;}
+.header h1 {color:#1f3c88;}
+.theme-toggle {cursor:pointer; font-size:20px;}
+
+/* Form Card */
+.form-card {background:#1f3c88; border-radius:12px; padding:30px; display:flex; flex-wrap:wrap; gap:20px; box-shadow:0 5px 20px rgba(0,0,0,0.2);}
+.form-card .form-group {flex:1 1 180px; display:flex; flex-direction:column;}
+.form-card label {margin-bottom:8px; font-weight:bold; color:#fff;}
+.form-card select, .form-card input {padding:10px; border:none; border-radius:6px; font-size:14px;}
+.form-card select {cursor:pointer;}
+.form-card button {padding:10px 24px; border:none; border-radius:6px; cursor:pointer; font-weight:bold; transition:0.2s;}
+
+/* Buttons */
+#submitButton {background:#27ae60; color:#fff;}
+#submitButton:hover {background:#1e8449; transform:translateY(-2px);}
+.youtube-button {background:#FF0000; color:#fff; display:flex; align-items:center; gap:8px;}
+.youtube-button:hover {background:#cc0000; transform:translateY(-2px);}
+
+/* History Table */
+.history-card {background:#2c3e50; padding:20px; border-radius:12px; overflow-x:auto;}
+.history-card table {width:100%; border-collapse:collapse;}
+.history-card th, .history-card td {padding:12px; text-align:left; color:#fff;}
+.history-card tr:nth-child(even) {background:rgba(255,255,255,0.05);}
+.delete-item {color:#e74c3c; cursor:pointer;}
+
+/* Exam Tracker */
+.tracker {display:flex; flex-wrap:wrap; gap:20px;}
+.exam-card {flex:1 1 200px; background:#34495e; padding:20px; border-radius:12px; transition:0.2s; cursor:pointer;}
+.exam-card:hover {transform:translateY(-5px); background:#3d5a80;}
+.exam-card h3 {margin-bottom:10px; font-size:16px;}
+.exam-card p {font-size:14px; opacity:0.8;}
+
+/* Responsive */
+@media(max-width:900px) { .form-card {flex-direction:column;} .exam-card{flex:1 1 100%;} }
 </style>
 </head>
 <body>
-<header>Cambridge AS/A2 Past Papers & YouTube</header>
-<main>
-    <label for="subjectCode">Subject</label>
-    <select id="subjectCode">
-        <option value="9701">Mathematics</option>
-        <option value="9702">Physics</option>
-        <option value="9608">Chemistry</option>
-        <option value="9618">Computer Science</option>
-        <!-- Add more subjects as needed -->
-    </select>
 
-    <label for="paperType">Paper Type</label>
-    <select id="paperType">
-        <option value="qp">Question Paper</option>
-        <option value="ms">Mark Scheme</option>
-        <option value="sf">Source File</option>
-    </select>
+<div class="container">
+  <div class="header">
+    <h1>Past Papers & Exam Tracker</h1>
+    <div class="theme-toggle" id="themeToggle">🌙</div>
+  </div>
 
-    <label for="component">Component (e.g., P1, P2)</label>
-    <input type="text" id="component" placeholder="Leave blank for default">
-
-    <label for="year">Year</label>
-    <input type="number" id="year" value="23" min="10" max="30">
-
-    <label for="session">Session</label>
-    <select id="session">
-        <option value="M">Feb/March</option>
-        <option value="F">May/June</option>
-        <option value="W">Oct/Nov</option>
-    </select>
-
-    <div class="buttons">
-        <button id="openPaper">Open Past Paper</button>
-        <button id="openYT">Search YouTube</button>
+  <!-- Form Card -->
+  <div class="form-card">
+    <div class="form-group">
+      <label for="subjectCode">Subject</label>
+      <select id="subjectCode">
+        <option value="9702">🍏 Physics</option>
+        <option value="9701">🧪 Chemistry</option>
+        <option value="9618">💻 Computer Science</option>
+        <option value="9608">💻 Computer (before 2021)</option>
+        <option value="9709">📐 Mathematics</option>
+        <option value="8021">📖 English General Paper</option>
+      </select>
     </div>
-</main>
+
+    <div class="form-group">
+      <label for="component">Component</label>
+      <input type="text" id="component" placeholder="Enter component">
+    </div>
+
+    <div class="form-group">
+      <label for="session">Session</label>
+      <select id="session">
+        <option value="m">Feb/March</option>
+        <option value="s">May/June</option>
+        <option value="w">Oct/Nov</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="year">Year</label>
+      <select id="year"></select>
+    </div>
+
+    <div class="form-group">
+      <label for="paperType">Paper Type</label>
+      <select id="paperType">
+        <option value="qp">Question Paper</option>
+        <option value="ms">Marking Scheme</option>
+        <option value="in">Insert</option>
+        <option value="sf">Source File</option>
+      </select>
+    </div>
+
+    <div class="form-group" style="display:flex; gap:10px; align-items:center;">
+      <button class="youtube-button" onclick="searchYoutube()"><i class="fa-brands fa-youtube"></i> YouTube</button>
+      <button id="submitButton" onclick="openPastPaper()">Open Paper</button>
+    </div>
+  </div>
+
+  <!-- History -->
+  <div class="history-card">
+    <h2>Search History</h2>
+    <table>
+      <thead>
+        <tr><th>Subject</th><th>Component</th><th>Session</th><th>Year</th><th>Type</th><th>Delete</th></tr>
+      </thead>
+      <tbody id="historyTableBody">
+        <tr><td colspan="6" style="text-align:center;">No history yet</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Exam Tracker -->
+  <div class="tracker" id="examTracker">
+    <!-- Exam cards will populate here -->
+  </div>
+</div>
 
 <script>
-function getPapacambridgeURL() {
-    const subjectCode = document.getElementById('subjectCode').value;
-    const paperType = document.getElementById('paperType').value;
-    let component = document.getElementById('component').value.trim();
-    const year = document.getElementById('year').value;
-    const session = document.getElementById('session').value;
-
-    // Default component if blank
-    if (!component) component = 'P1';
-
-    // Special handling for Computer Science Source Files
-    if (subjectCode === '9618' && paperType === 'sf') {
-        const sessionText = session === 'M' ? 'feb-march' : (session === 'F' ? 'may-june' : 'oct-nov');
-        return `https://pastpapers.papacambridge.com/papers/caie/as-and-a-level-computer-science-for-first-examination-in-2021-${subjectCode}-20${year}-${sessionText}`;
-    }
-
-    return `https://pastpapers.papacambridge.com/directories/CAIE/CAIE-pastpapers/upload/${subjectCode}_${session}${year}_${paperType}_${component}.pdf`;
+// Populate years
+const yearSelect = document.getElementById('year');
+const currentYear = new Date().getFullYear();
+for(let y=currentYear+1; y>=2000; y--){
+  let opt = document.createElement('option');
+  opt.value = y.toString().slice(-2);
+  opt.textContent = y;
+  yearSelect.appendChild(opt);
 }
 
-document.getElementById('openPaper').addEventListener('click', () => {
-    const url = getPapacambridgeURL();
-    window.open(url, '_blank');
+// History functionality
+function saveToHistory(item){
+  let history = JSON.parse(localStorage.getItem('searchHistory')||'[]');
+  history.unshift({...item, timestamp:new Date().toISOString()});
+  localStorage.setItem('searchHistory', JSON.stringify(history.slice(0,10)));
+  updateHistory();
+}
+function updateHistory(){
+  const tbody = document.getElementById('historyTableBody');
+  const history = JSON.parse(localStorage.getItem('searchHistory')||'[]');
+  if(!history.length){tbody.innerHTML=`<tr><td colspan="6" style="text-align:center;">No history yet</td></tr>`; return;}
+  tbody.innerHTML = history.map((h,i)=>`
+    <tr onclick="openPaper('${h.subjectCode}','${h.component}','${h.session}','${h.year}','${h.paperType}')">
+      <td>${getSubjectName(h.subjectCode)}</td>
+      <td>${h.component}</td>
+      <td>${h.session.toUpperCase()}</td>
+      <td>20${h.year}</td>
+      <td>${h.paperType.toUpperCase()}</td>
+      <td><span class="delete-item" onclick="deleteItem(${i},event)">✖</span></td>
+    </tr>
+  `).join('');
+}
+function deleteItem(i,e){e.stopPropagation(); let h=JSON.parse(localStorage.getItem('searchHistory')||'[]'); h.splice(i,1); localStorage.setItem('searchHistory',JSON.stringify(h)); updateHistory();}
+function getSubjectName(code){
+  const map={'9702':'Physics','9701':'Chemistry','9618':'Computer Science','9608':'Computer (before 2021)','9709':'Mathematics','8021':'English General Paper'};
+  return map[code]||code;
+}
+
+// Open past paper
+function openPastPaper(){
+  const s=document.getElementById('subjectCode').value;
+  const c=document.getElementById('component').value;
+  const ses=document.getElementById('session').value;
+  const y=document.getElementById('year').value;
+  const p=document.getElementById('paperType').value;
+  saveToHistory({subjectCode:s, component:c, session:ses, year:y, paperType:p});
+  const url = `https://pastpapers.papacambridge.com/directories/CAIE/CAIE-pastpapers/upload/${s}_${ses}${y}_${p}_${c}.pdf`;
+  window.open(url,'_blank');
+  updateHistory();
+}
+function openPaper(s,c,ses,y,p){const url=`https://pastpapers.papacambridge.com/directories/CAIE/CAIE-pastpapers/upload/${s}_${ses}${y}_${p}_${c}.pdf`; window.open(url,'_blank');}
+
+// YouTube search
+function searchYoutube(){
+  const subj=document.getElementById('subjectCode').value;
+  const comp=document.getElementById('component').value;
+  const q=`${subj} ${comp} paper`;
+  window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(q)}`,'_blank');
+}
+
+// Load history
+updateHistory();
+
+// Example exam tracker data
+const exams=[
+  {subject:'Physics',component:'P1',date:'2026-04-28',session:'s'},
+  {subject:'Mathematics',component:'P2',date:'2026-04-29',session:'s'},
+  {subject:'Chemistry',component:'P3',date:'2026-04-30',session:'s'},
+  {subject:'EGP',component:'P1',date:'2026-04-27',session:'s'}
+];
+const tracker=document.getElementById('examTracker');
+exams.forEach(ex=>{
+  const card=document.createElement('div');
+  card.className='exam-card';
+  card.innerHTML=`<h3>${ex.subject}</h3><p>${ex.component}</p><p>${ex.date} (${ex.session.toUpperCase()})</p>`;
+  tracker.appendChild(card);
 });
 
-document.getElementById('openYT').addEventListener('click', () => {
-    const subjectCode = document.getElementById('subjectCode').value;
-    const component = document.getElementById('component').value.trim();
-    const query = `${subjectCode} ${component} Cambridge AS A-Level`;
-    const ytURL = `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
-    window.open(ytURL, '_blank');
-});
+// Theme toggle
+const toggle=document.getElementById('themeToggle');
+toggle.onclick=function(){
+  document.body.classList.toggle('dark');
+}
 </script>
 </body>
 </html>
