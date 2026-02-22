@@ -48,14 +48,89 @@ body {font-family: 'Segoe UI', sans-serif; background-color:#f0f4f8; color:#fff;
 .exam-card h3 {margin-bottom:10px; font-size:16px;}
 .exam-card p {font-size:14px; opacity:0.8;}
 
-/* Mini Calendar */
-#miniCalendar {background:#1f3c88; padding:20px; border-radius:12px; display:flex; flex-wrap:wrap; gap:4px; justify-content:center;}
-#miniCalendar div {width:32px; height:32px; display:flex; justify-content:center; align-items:center; border-radius:4px; cursor:pointer;}
-#miniCalendar .today {background:#27ae60;}
-#miniCalendar .exam-day {background:#f39c12; color:#000; font-weight:bold;}
+/* Mini Calendar Widget */
+.calendar-widget {
+  width: 280px;
+  background: #1f3c88;
+  padding: 15px;
+  border-radius: 12px;
+  margin: auto;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.calendar-title {
+  text-align: center;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+#miniCalendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+
+#miniCalendar div {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+#miniCalendar .today {
+  background: #27ae60;
+}
+
+#miniCalendar .exam-day {
+  background: #f39c12;
+  color: #000;
+  font-weight: bold;
+}
 
 /* Responsive */
 @media(max-width:900px) { .form-card {flex-direction:column;} .exam-card{flex:1 1 100%;} }
+  /* DARK MODE */
+body.dark {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+body.dark .header h1 {
+  color: #ffffff;
+}
+
+body.dark .form-card {
+  background: #1e1e1e;
+}
+
+body.dark .history-card {
+  background: #1e1e1e;
+}
+
+body.dark .exam-card {
+  background: #2a2a2a;
+}
+
+body.dark .exam-card:hover {
+  background: #333;
+}
+
+body.dark #miniCalendar {
+  background: #1e1e1e;
+}
+
+body.dark #daysLeft {
+  color: #ffffff;
+}
+
+body.dark input,
+body.dark select {
+  background: #2a2a2a;
+  color: #fff;
+}
 </style>
 </head>
 <body>
@@ -129,15 +204,18 @@ body {font-family: 'Segoe UI', sans-serif; background-color:#f0f4f8; color:#fff;
   </div>
 
   <!-- Exam Tracker -->
+  <div id="urgentExams" style="background:#c0392b; padding:15px; border-radius:10px; display:none;">
+  <strong>⚠ Very Close Exams:</strong>
+  <div id="urgentList"></div>
+  </div>
   <div class="tracker" id="examTracker">
     <!-- Exam cards will populate here -->
   </div>
 
   <!-- Mini Calendar -->
-  <div>
-    <h2>Upcoming Exams Calendar</h2>
-    <div id="miniCalendar"></div>
-    <p id="daysLeft" style="text-align:center; margin-top:10px; font-weight:bold; color:#1f3c88;"></p>
+  <div class="calendar-widget">
+  <div class="calendar-title">This Month</div>
+  <div id="miniCalendar"></div>
   </div>
 
 </div>
@@ -231,13 +309,53 @@ const exams=[
 
 // Populate exam cards
 const tracker=document.getElementById('examTracker');
+const todayDate = new Date();
+
 exams.forEach(ex=>{
-  const card=document.createElement('div');
-  card.className='exam-card';
-  card.innerHTML=`<h3>${ex.subject}</h3><p>${ex.component}</p><p>${ex.date} (${ex.session.toUpperCase()})</p>`;
+  const examDate = new Date(ex.date);
+  const diffTime = examDate - todayDate;
+  const diffDays = Math.ceil(diffTime / (1000*60*60*24));
+
+  const card = document.createElement('div');
+  card.className = 'exam-card';
+
+  // Color coding based on urgency
+  if(diffDays <= 3){
+    card.style.background = "#e74c3c"; // red
+  } else if(diffDays <= 7){
+    card.style.background = "#e67e22"; // orange
+  } else if(diffDays <= 14){
+    card.style.background = "#f1c40f"; // yellow
+    card.style.color = "#000";
+  } else {
+    card.style.background = "#2ecc71"; // green
+  }
+
+  card.innerHTML = `
+    <h3>${ex.subject}</h3>
+    <p>${ex.component}</p>
+    <p>${ex.date} (${ex.session.toUpperCase()})</p>
+    <p><strong>${diffDays >= 0 ? diffDays + " day(s) left" : "Completed"}</strong></p>
+  `;
+
   tracker.appendChild(card);
 });
 
+  const urgentContainer = document.getElementById('urgentExams');
+const urgentList = document.getElementById('urgentList');
+
+const urgent = exams.filter(e=>{
+  const days = Math.ceil((new Date(e.date) - todayDate)/(1000*60*60*24));
+  return days >= 0 && days <= 3;
+});
+
+if(urgent.length){
+  urgentContainer.style.display = "block";
+  urgentList.innerHTML = urgent.map(e=>{
+    const days = Math.ceil((new Date(e.date) - todayDate)/(1000*60*60*24));
+    return `<div>${e.subject} ${e.component} - ${days} day(s)</div>`;
+  }).join('');
+}
 // Mini Calendar generation
 const miniCal = document.getElementById('miniCalendar');
 const today = new Date();
