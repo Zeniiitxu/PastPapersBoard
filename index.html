@@ -197,10 +197,19 @@ function openPaper(s,c,ses,y,p){const url=`https://pastpapers.papacambridge.com/
 
 // YouTube search
 function searchYoutube(){
-  const subj=document.getElementById('subjectCode').value;
-  const comp=document.getElementById('component').value;
-  const q=`${subj}/${comp}/o/n/24`; // Custom format
-  window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(q)}`,'_blank');
+  const subj = document.getElementById('subjectCode').value;
+  const comp = document.getElementById('component').value;
+  const ses = document.getElementById('session').value;
+  const year = document.getElementById('year').value;
+
+  // Convert session to proper format
+  let sessionText = '';
+  if(ses === 'w') sessionText = 'o/n';
+  else if(ses === 's') sessionText = 'm/j';
+  else if(ses === 'm') sessionText = 'f/m';
+
+  const q = `${subj}/${comp}/${sessionText}/${year}`;
+  window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(q)}`, '_blank');
 }
 
 // Load history
