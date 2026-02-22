@@ -4,17 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Past Papers & Exam Tracker</title>
+<link rel="icon" href="LOGO.png" type="image/png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 <style>
+/* Basic Reset */
 * {margin:0; padding:0; box-sizing:border-box;}
-
 body {
   font-family: 'Segoe UI', sans-serif;
   background-color:#f0f4f8;
-  color:#000; /* FIXED */
+  color:#000; /* Fix for light mode text */
   min-height:100vh;
   padding:20px;
-  transition:0.3s;
+  transition: 0.3s;
 }
 
 /* Container */
@@ -22,91 +24,121 @@ body {
 
 /* Header */
 .header {display:flex; justify-content:space-between; align-items:center;}
-.header h1 {color:#1f3c88;}
+.header h1 {color:#1f3c88; transition:0.3s;}
 .theme-toggle {cursor:pointer; font-size:20px;}
 
 /* Form Card */
-.form-card {
-  background:#1f3c88;
-  border-radius:12px;
-  padding:30px;
-  display:flex;
-  flex-wrap:wrap;
-  gap:20px;
-  color:#fff;
-}
+.form-card {background:#1f3c88; border-radius:12px; padding:30px; display:flex; flex-wrap:wrap; gap:20px; color:#fff; transition:0.3s;}
+.form-card .form-group {flex:1 1 180px; display:flex; flex-direction:column;}
+.form-card label {margin-bottom:8px; font-weight:bold; color:#fff;}
+.form-card select, .form-card input {padding:10px; border:none; border-radius:6px; font-size:14px;}
+.form-card select {cursor:pointer;}
+.form-card button {padding:10px 24px; border:none; border-radius:6px; cursor:pointer; font-weight:bold; transition:0.2s;}
 
-.form-card label {color:#fff;}
-.form-card input, .form-card select {
-  padding:10px;
-  border:none;
-  border-radius:6px;
-}
+/* Buttons */
+#submitButton {background:#27ae60; color:#fff;}
+#submitButton:hover {background:#1e8449; transform:translateY(-2px);}
+.youtube-button {background:#FF0000; color:#fff; display:flex; align-items:center; gap:8px;}
+.youtube-button:hover {background:#cc0000; transform:translateY(-2px);}
 
-/* History */
-.history-card {
-  background:#2c3e50;
-  padding:20px;
-  border-radius:12px;
-  color:#fff;
-}
+/* History Table */
+.history-card {background:#2c3e50; padding:20px; border-radius:12px; overflow-x:auto; color:#fff; transition:0.3s;}
+.history-card table {width:100%; border-collapse:collapse;}
+.history-card th, .history-card td {padding:12px; text-align:left; color:#fff;}
+.history-card tr:nth-child(even) {background:rgba(255,255,255,0.05);}
+.delete-item {color:#e74c3c; cursor:pointer;}
 
-/* Exam Cards */
-.exam-card {
-  background:#34495e;
-  padding:20px;
-  border-radius:12px;
-  color:#fff;
-}
+/* Exam Tracker */
+.tracker {display:flex; flex-wrap:wrap; gap:20px;}
+.exam-card {flex:1 1 200px; background:#34495e; padding:20px; border-radius:12px; transition:0.2s; cursor:pointer; color:#fff;}
+.exam-card:hover {transform:translateY(-5px); background:#3d5a80;}
+.exam-card h3 {margin-bottom:10px; font-size:16px;}
+.exam-card p {font-size:14px; opacity:0.8;}
 
-/* Calendar */
+/* Mini Calendar Widget */
 .calendar-widget {
-  width:280px;
-  background:#1f3c88;
-  padding:15px;
-  border-radius:12px;
-  margin:auto;
+  width: 280px;
+  background: #1f3c88;
+  padding: 15px;
+  border-radius: 12px;
+  margin: auto;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
   color:#fff;
+  transition:0.3s;
+}
+
+.calendar-title {
+  text-align: center;
+  margin-bottom: 10px;
+  font-weight: bold;
 }
 
 #miniCalendar {
-  display:grid;
-  grid-template-columns:repeat(7,1fr);
-  gap:5px;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
 }
 
 #miniCalendar div {
-  height:32px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  border-radius:6px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px;
+  font-size: 13px;
 }
 
-.today {background:#27ae60;}
-.exam-day {background:#f39c12; color:#000;}
+#miniCalendar .today {
+  background: #27ae60;
+}
 
-/* 🌙 DARK MODE */
+#miniCalendar .exam-day {
+  background: #f39c12;
+  color: #000;
+  font-weight: bold;
+}
+
+/* Responsive */
+@media(max-width:900px) { .form-card {flex-direction:column;} .exam-card{flex:1 1 100%;} }
+
+/* DARK MODE */
 body.dark {
-  background:#121212;
-  color:#fff;
+  background-color: #121212;
+  color: #fff;
 }
 
-body.dark .header h1 {color:#fff;}
+body.dark .header h1 {
+  color: #fff;
+}
 
-body.dark .form-card {background:#1e1e1e;}
-body.dark .history-card {background:#1e1e1e;}
-body.dark .exam-card {background:#2a2a2a;}
-body.dark .calendar-widget {background:#1e1e1e;}
+body.dark .form-card {
+  background: #1e1e1e;
+}
+
+body.dark .history-card {
+  background: #1e1e1e;
+}
+
+body.dark .exam-card {
+  background: #2a2a2a;
+}
+
+body.dark .exam-card:hover {
+  background: #333;
+}
+
+body.dark .calendar-widget {
+  background: #1e1e1e;
+}
 
 body.dark input,
 body.dark select {
-  background:#2a2a2a;
-  color:#fff;
+  background: #2a2a2a;
+  color: #fff;
 }
 </style>
 </head>
-
 <body>
 
 <div class="container">
@@ -115,42 +147,217 @@ body.dark select {
     <div class="theme-toggle" id="themeToggle">🌙</div>
   </div>
 
+  <!-- Form Card -->
   <div class="form-card">
-    <label>Test Input</label>
-    <input placeholder="Try typing here">
+    <div class="form-group">
+      <label for="subjectCode">Subject</label>
+      <select id="subjectCode">
+        <option value="9702">🍏 Physics</option>
+        <option value="9701">🧪 Chemistry</option>
+        <option value="9618">💻 Computer Science</option>
+        <option value="9608">💻 Computer (before 2021)</option>
+        <option value="9709">📐 Mathematics</option>
+        <option value="8021">📖 English General Paper</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="component">Component</label>
+      <input type="text" id="component" placeholder="Enter component">
+    </div>
+
+    <div class="form-group">
+      <label for="session">Session</label>
+      <select id="session">
+        <option value="m">Feb/March</option>
+        <option value="s">May/June</option>
+        <option value="w">Oct/Nov</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="year">Year</label>
+      <select id="year"></select>
+    </div>
+
+    <div class="form-group">
+      <label for="paperType">Paper Type</label>
+      <select id="paperType">
+        <option value="qp">Question Paper</option>
+        <option value="ms">Marking Scheme</option>
+        <option value="in">Insert</option>
+        <option value="sf">Source File</option>
+      </select>
+    </div>
+
+    <div class="form-group" style="display:flex; gap:10px; align-items:center;">
+      <button class="youtube-button" onclick="searchYoutube()"><i class="fa-brands fa-youtube"></i> YouTube</button>
+      <button id="submitButton" onclick="openPastPaper()">Open Paper</button>
+    </div>
   </div>
 
-  <div class="history-card">History Section</div>
+  <!-- History -->
+  <div class="history-card">
+    <h2>Search History</h2>
+    <table>
+      <thead>
+        <tr><th>Subject</th><th>Component</th><th>Session</th><th>Year</th><th>Type</th><th>Delete</th></tr>
+      </thead>
+      <tbody id="historyTableBody">
+        <tr><td colspan="6" style="text-align:center;">No history yet</td></tr>
+      </tbody>
+    </table>
+  </div>
 
-  <div class="exam-card">Exam Card Example</div>
+  <!-- Exam Tracker -->
+  <div id="urgentExams" style="background:#c0392b; padding:15px; border-radius:10px; display:none;">
+  <strong>⚠ Very Close Exams:</strong>
+  <div id="urgentList"></div>
+  </div>
+  <div class="tracker" id="examTracker"></div>
 
+  <!-- Mini Calendar -->
   <div class="calendar-widget">
+    <div class="calendar-title">This Month</div>
     <div id="miniCalendar"></div>
   </div>
 </div>
 
 <script>
-// THEME TOGGLE (FIXED + IMPROVED)
-const toggle = document.getElementById("themeToggle");
-
-// Load saved theme
-if(localStorage.getItem("theme") === "dark"){
-  document.body.classList.add("dark");
-  toggle.textContent = "☀️";
+// Populate years
+const yearSelect = document.getElementById('year');
+const currentYear = new Date().getFullYear();
+for(let y=currentYear+1; y>=2000; y--){
+  let opt = document.createElement('option');
+  opt.value = y.toString().slice(-2);
+  opt.textContent = y;
+  yearSelect.appendChild(opt);
 }
 
-toggle.onclick = () => {
-  document.body.classList.toggle("dark");
+// History functions
+function saveToHistory(item){
+  let history = JSON.parse(localStorage.getItem('searchHistory')||'[]');
+  history.unshift({...item, timestamp:new Date().toISOString()});
+  localStorage.setItem('searchHistory', JSON.stringify(history.slice(0,10)));
+  updateHistory();
+}
+function updateHistory(){
+  const tbody = document.getElementById('historyTableBody');
+  const history = JSON.parse(localStorage.getItem('searchHistory')||'[]');
+  if(!history.length){tbody.innerHTML=`<tr><td colspan="6" style="text-align:center;">No history yet</td></tr>`; return;}
+  tbody.innerHTML = history.map((h,i)=>`
+    <tr onclick="openPaper('${h.subjectCode}','${h.component}','${h.session}','${h.year}','${h.paperType}')">
+      <td>${getSubjectName(h.subjectCode)}</td>
+      <td>${h.component}</td>
+      <td>${h.session.toUpperCase()}</td>
+      <td>20${h.year}</td>
+      <td>${h.paperType.toUpperCase()}</td>
+      <td><span class="delete-item" onclick="deleteItem(${i},event)">✖</span></td>
+    </tr>
+  `).join('');
+}
+function deleteItem(i,e){e.stopPropagation(); let h=JSON.parse(localStorage.getItem('searchHistory')||'[]'); h.splice(i,1); localStorage.setItem('searchHistory',JSON.stringify(h)); updateHistory();}
+function getSubjectName(code){
+  const map={'9702':'Physics','9701':'Chemistry','9618':'Computer Science','9608':'Computer (before 2021)','9709':'Mathematics','8021':'English General Paper'};
+  return map[code]||code;
+}
 
-  if(document.body.classList.contains("dark")){
-    toggle.textContent = "☀️";
-    localStorage.setItem("theme","dark");
-  } else {
-    toggle.textContent = "🌙";
-    localStorage.setItem("theme","light");
-  }
-};
+// Open past paper
+function openPastPaper(){
+  const s=document.getElementById('subjectCode').value;
+  const c=document.getElementById('component').value;
+  const ses=document.getElementById('session').value;
+  const y=document.getElementById('year').value;
+  const p=document.getElementById('paperType').value;
+  saveToHistory({subjectCode:s, component:c, session:ses, year:y, paperType:p});
+  const url = `https://pastpapers.papacambridge.com/directories/CAIE/CAIE-pastpapers/upload/${s}_${ses}${y}_${p}_${c}.pdf`;
+  window.open(url,'_blank');
+  updateHistory();
+}
+function openPaper(s,c,ses,y,p){const url=`https://pastpapers.papacambridge.com/directories/CAIE/CAIE-pastpapers/upload/${s}_${ses}${y}_${p}_${c}.pdf`; window.open(url,'_blank');}
+
+// YouTube search
+function searchYoutube(){
+  const subj = document.getElementById('subjectCode').value;
+  const comp = document.getElementById('component').value;
+  const ses = document.getElementById('session').value;
+  const year = document.getElementById('year').value;
+  let sessionText = ses==='w'?'o/n':ses==='s'?'m/j':'f/m';
+  const q = `${subj}/${comp}/${sessionText}/${year}`;
+  window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(q)}`, '_blank');
+}
+
+// Load history
+updateHistory();
+
+// Exam Tracker data
+const exams=[
+  {subject:'EGP',component:'P1',date:'2026-04-27',session:'s'},
+  {subject:'EGP',component:'P2',date:'2026-05-04',session:'s'},
+  {subject:'Mathematics',component:'P4',date:'2026-05-06',session:'s'},
+  {subject:'Chemistry',component:'P4',date:'2026-05-06',session:'s'},
+  {subject:'Physics',component:'P4',date:'2026-05-11',session:'s'},
+  {subject:'Mathematics',component:'P3',date:'2026-05-15',session:'s'},
+  {subject:'Chemistry',component:'P5',date:'2026-05-18',session:'s'},
+  {subject:'Computer',component:'P3',date:'2026-05-19',session:'s'},
+  {subject:'Physics',component:'P5',date:'2026-05-20',session:'s'},
+  {subject:'Computer',component:'P4',date:'2026-05-21',session:'s'}
+];
+
+// Populate exam cards
+const tracker=document.getElementById('examTracker');
+const todayDate = new Date();
+exams.forEach(ex=>{
+  const examDate = new Date(ex.date);
+  const diffTime = examDate - todayDate;
+  const diffDays = Math.ceil(diffTime / (1000*60*60*24));
+  const card = document.createElement('div'); card.className='exam-card';
+  if(diffDays <= 3) card.style.background="#e74c3c";
+  else if(diffDays <= 7) card.style.background="#e67e22";
+  else if(diffDays <= 14) {card.style.background="#f1c40f"; card.style.color="#000";}
+  else card.style.background="#2ecc71";
+  card.innerHTML=`<h3>${ex.subject}</h3><p>${ex.component}</p><p>${ex.date} (${ex.session.toUpperCase()})</p><p><strong>${diffDays>=0?diffDays+' day(s) left':'Completed'}</strong></p>`;
+  tracker.appendChild(card);
+});
+
+// Urgent Exams
+const urgentContainer=document.getElementById('urgentExams');
+const urgentList=document.getElementById('urgentList');
+const urgent=exams.filter(e=>{
+  const days=Math.ceil((new Date(e.date)-todayDate)/(1000*60*60*24));
+  return days>=0 && days<=3;
+});
+if(urgent.length){urgentContainer.style.display="block"; urgentList.innerHTML=urgent.map(e=>{
+  const days=Math.ceil((new Date(e.date)-todayDate)/(1000*60*60*24));
+  return `<div>${e.subject} ${e.component} - ${days} day(s)</div>`;
+}).join('');}
+
+// Mini Calendar
+const miniCal=document.getElementById('miniCalendar');
+const today=new Date();
+const month=today.getMonth();
+const year=today.getFullYear();
+const firstDay=new Date(year,month,1).getDay();
+const daysInMonth=new Date(year,month+1,0).getDate();
+for(let i=0;i<firstDay;i++){miniCal.appendChild(document.createElement('div'));}
+for(let day=1;day<=daysInMonth;day++){
+  const dayDiv=document.createElement('div');
+  const dateStr=`${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+  dayDiv.textContent=day;
+  if(exams.some(e=>e.date===dateStr)) dayDiv.classList.add('exam-day');
+  if(day===today.getDate()) dayDiv.classList.add('today');
+  miniCal.appendChild(dayDiv);
+}
+
+// Theme toggle
+const toggle=document.getElementById('themeToggle');
+// load saved theme
+if(localStorage.getItem("theme")==="dark"){document.body.classList.add("dark"); toggle.textContent="☀️";}
+toggle.onclick=function(){
+  document.body.classList.toggle('dark');
+  if(document.body.classList.contains('dark')){toggle.textContent="☀️"; localStorage.setItem("theme","dark");}
+  else {toggle.textContent="🌙"; localStorage.setItem("theme","light");}
+}
 </script>
-
 </body>
 </html>
